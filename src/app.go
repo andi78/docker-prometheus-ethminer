@@ -124,10 +124,22 @@ func metrics(w http.ResponseWriter, r *http.Request) {
 
         s := strings.Split(jsonData.Result[2], ";")
         hashRate = stringToFloat(s[0]) / 1000
+
+
+        ss := strings.Split(jsonData.Result[3], ";")
+        for index, element := range ss {
+          io.WriteString(w, formatValue("ethminer_hash", "miner=\"" + strconv.Itoa(index) + "\"", element))
+          // index is the index where we are
+          // element is the element from someSlice for where we are
+        }
+        
+
     }
 
     // Output
     io.WriteString(w, formatValue("ethminer_up", "miner=\"" + minerId + "\"", integerToString(up)))
+//    io.WriteString(w, formatValue("ethminer_up1", "miner=\"" + minerId + "\"", integerToString(up)))
+
     io.WriteString(w, formatValue("ethminer_hashrate", "miner=\"" + minerId + "\"", floatToString(hashRate, 6)))
 }
 
